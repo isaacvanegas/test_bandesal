@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<body>
+
+<ui:composition template="./../WEB-INF/templates/template.xhtml">
+
+    <ui:define name="content">
+
+        <h:form id="listaBlogForm">
+            <p:growl id="mensaje" showDetail="true" showSummary="false" autoUpdate="true" severity="info,fatal"/>
+            <p:growl id="messageError" showDetail="true" showSummary="false" sticky="true" autoUpdate="true"
+                     severity="error"/>
+            <div class="ui-g">
+                <div class="ui-lg-2">
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <p:commandButton value="Lectores"
+                                             style="width: 100%"
+                                             ajax="false"
+                                             styleClass="blue-grey-btn"
+                                             action="#{blogController.calculateRedirect(1)}"/>
+                        </div>
+                        <div class="ui-g-12">
+                            <p:commandButton value="Blogs"
+                                             style="width: 100%"
+                                             ajax="false"
+                                             styleClass="blue-grey-btn"
+                                             action="#{blogController.calculateRedirect(2)}"/>
+                        </div>
+                        <div class="ui-g-12">
+                            <p:commandButton value="Lectores por blogs"
+                                             style="width: 100%"
+                                             ajax="false"
+                                             styleClass="blue-grey-btn"
+                                             action="#{blogController.calculateRedirect(3)}"/>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="ui-lg-10">
+
+                    <div class="ui-grid">
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <p:commandButton value="Agregar blog"
+                                             styleClass="cyan-btn"
+                                             actionListener="#{blogController.showDialog()}"
+                            />
+                        </div>
+                    </div>
+
+                    <p:dataTable id="dtBlog"
+                                 style="height: auto !important;"
+                                 var="blog"
+                                 widgetVar="dtBlog"
+                                 value="#{blogController.listBlog}"
+                                 paginatorPosition="top"
+                                 paginator="true"
+                                 emptyMessage="sin registros"
+                                 rows="10"
+                                 lazy="true"
+                                 pageLinks="5"
+                                 dynamic="true"
+                                 reflow="true"
+                                 scrollable="false"
+                                 scrollWidth="100%"
+                                 scrollHeight="100%"
+                                 expandedRow="false"
+                                 styleClass="ui-paginator-current"
+                                 rowKey="#{blog.id}"
+                                 selectionMode="single"
+                                 selection="#{blogController.blog}">
+
+                        <p:ajax event="rowSelect" listener="#{blogController.edit()}" update="formBlog"/>
+
+                        <p:column headerText="Id" width="5%">
+                            <h:outputText value="#{blog.id}"/>
+                        </p:column>
+                        <p:column headerText="Titulo" width="25%">
+                            <h:outputText value="#{blog.title}"/>
+                        </p:column>
+                        <p:column headerText="Descripción" width="25%">
+                            <h:outputText value="#{blog.description}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+            </div>
+        </h:form>
+
+        <p:dialog header="Agregar blog" id="dlg2"
+                  widgetVar="dlg2" modal="true" width="60%"
+                  position="center">
+
+            <h:form id="formBlog">
+                <div class="ui-g">
+                        <div class="ui-lg-6">
+                          <p:commandButton value="#{blogController.getAction()}"
+                                             styleClass="green-btn"
+                                             process="@this"
+                                             actionListener="#{blogController.registrar()}"
+                                             update="listaBlogForm , listaBlogForm:mensaje"/>
+                            <p:commandButton value="Eliminar" actionListener="#{blogController.eliminar()}"
+                                             styleClass="red-btn"
+                                             update="listaBlogForm , listaBlogForm:mensaje "
+                                             rendered="#{blogController.getAction() eq 'Editar'}"/>
+                        </div>
+                        <div class="ui-lg-3">
+                            <p:inputText id="titutlo"
+                                         label="Titulo"
+                                         required="true"
+                                         autocomplete="off"
+                                         value="#{blogController.blog.title}"
+                                         maxlength="100"
+                                         placeholder="Titulo:">
+                                <f:validateLength minimum="4" maximum="50"/>
+                                <p:ajax event="change"/>
+                            </p:inputText>
+                        </div>
+                        <div class="ui-lg-3">
+                            <p:inputText id="descripcion"
+                                         label="Descripcion"
+                                         required="true"
+                                         autocomplete="off"
+                                         value="#{blogController.blog.description}"
+                                         maxlength="100"
+                                         placeholder="Descripcion:">
+                                <f:validateLength minimum="4" maximum="50"/>
+                                <p:ajax event="change"/>
+                            </p:inputText>
+                        </div>
+                </div>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+
+</ui:composition>
+</body>
+</html>

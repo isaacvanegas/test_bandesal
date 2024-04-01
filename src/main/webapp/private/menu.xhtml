@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+<body>
+<ui:composition>
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <p:commandButton value="Lectores"
+                                     style="width: 100%"
+                                     ajax="false"
+                                     styleClass="green-btn"
+                                     action="#{loginController.calculateRedirect(1)}"/>
+                </div>
+                <div class="ui-g-12">
+                    <p:commandButton value="Blogs"
+                                     style="width: 100%"
+                                     ajax="false"
+                                     styleClass="green-btn"
+                                     action="#{loginController.calculateRedirect(2)}"/>
+                </div>
+                <div class="ui-g-12">
+                    <p:commandButton value="Lectores por blogs"
+                                     style="width: 100%"
+                                     ajax="false"
+                                     styleClass="green-btn"
+                                     action="#{loginController.calculateRedirect(3)}"/>
+                </div>
+            </div>
+</ui:composition>
+</body>
+</html>
