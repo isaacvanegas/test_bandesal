@@ -1,0 +1,97 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <h:head>
+        <h:outputStylesheet name="theme.css" library="primefaces-sapphire-gray"/>
+        <h:outputScript name="js/layout.js" library="sapphire-layout"/>
+        <h:outputScript name="js/ripple.js" library="sapphire-layout"/>
+        <h:outputStylesheet name="css/layout-#{guestPreferences.layout}.css" library="sapphire-layout"/>
+
+        <title>Test Bandesal register</title>
+    </h:head>
+</h:head>
+
+<h:body styleClass="login-body">
+
+    <h:form id="registerForm">
+        <p:growl id="mensaje" showDetail="true" showSummary="false" autoUpdate="true" severity="info,warn,fatal" />
+        <p:growl id="messageError" showDetail="true" showSummary="false" sticky="true" autoUpdate="true"
+                 severity="error"/>
+        <style type="text/css">
+            body .ui-button {
+                height: auto;
+                border: none;
+            }
+
+            body .ui-inputfield.ui-state-error {
+                border-color: #e62a10;
+                background-image: none;
+            }
+        </style>
+
+        <div class="login-panel ui-fluid">
+            <div class="login-panel-header">
+                <h:graphicImage library="bandesal"
+                                name="img/icon/LogoBANDESAL_.png"/>
+            </div>
+            <div class="login-panel-content">
+                <div class="ui-g">
+
+                    <div class="ui-g-12">
+                        <h1>REGISTRARSE</h1>
+                    </div>
+
+                    <div class="ui-lg-12">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:inputText label="Username" required="true" autocomplete="off"
+                                         maxlength="50" style="text-align: center"
+                                         id="username"
+                                         value="#{usuarioController.usuario.nombre}">
+                                <f:validateLength minimum="6" maximum="50"/>
+                            </p:inputText>
+                            <label>Usuario</label>
+                        </h:panelGroup>
+                    </div>
+
+                    <div class="ui-lg-12">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:password label="Contraseña" required="true" autocomplete="off"
+                                        maxlength="50" style="text-align: center"
+                                        id="password"
+                                        validatorMessage="Las claves no coinciden" weakLabel="Débil"
+                                        strongLabel="Fuerte"
+                                        goodLabel="Bueno" match="password2" feedback="true"
+                                        promptLabel="Ingrese una clave"
+                                        value="#{usuarioController.usuario.password}">
+                                <f:validateLength minimum="6" maximum="50"/>
+                            </p:password>
+                            <label>Contraseña</label>
+                        </h:panelGroup>
+                    </div>
+                    <div class="ui-lg-12">
+                        <h:panelGroup styleClass="md-inputfield">
+                            <p:password id="password2" style="text-align: center" >
+
+                                <f:validateLength minimum="6" maximum="50"/>
+                            </p:password>
+                            <label>Repetir contraseña</label>
+                        </h:panelGroup>
+                    </div>
+                    <div class="ui-lg-12">
+                        <p:commandButton value="Registrar"
+                                         actionListener="#{usuarioController.registrar()}"
+                                         update="registerForm , mensaje"/>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </h:form>
+</h:body>
+</html>
+

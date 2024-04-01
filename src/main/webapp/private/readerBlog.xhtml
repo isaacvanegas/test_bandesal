@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<body>
+
+<ui:composition template="./../WEB-INF/templates/template.xhtml">
+
+    <ui:define name="content">
+
+        <h:form id="listaReaderReaderForm">
+            <p:growl id="mensaje" showDetail="true" showSummary="false" autoUpdate="true" severity="info,fatal"/>
+            <p:growl id="messageError" showDetail="true" showSummary="false" sticky="true" autoUpdate="true"
+                     severity="error"/>
+
+            <div class="ui-g">
+                <div class="ui-lg-2">
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <p:commandButton value="Lectores"
+                                             style="width: 100%"
+                                             ajax="false"
+                                             styleClass="blue-grey-btn"
+                                             action="#{blogReaderController.calculateRedirect(1)}"/>
+                        </div>
+                        <div class="ui-g-12">
+                            <p:commandButton value="Blogs"
+                                             style="width: 100%"
+                                             ajax="false"
+                                             styleClass="blue-grey-btn"
+                                             action="#{blogReaderController.calculateRedirect(2)}"/>
+                        </div>
+                        <div class="ui-g-12">
+                            <p:commandButton value="Lectores por blogs"
+                                             style="width: 100%"
+                                             ajax="false"
+                                             styleClass="blue-grey-btn"
+                                             action="#{blogReaderController.calculateRedirect(3)}"/>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="ui-lg-10">
+
+                    <div class="ui-grid">
+                        <div class="ui-g-12 ui-md-6 ui-lg-3">
+                            <p:commandButton value="Agregar blog y reader" icon="pi pi-plus-circle"
+                                             actionListener="#{blogReaderController.showDialog()}"
+                                            />
+                        </div>
+                    </div>
+
+                    <p:dataTable id="dtBlogReader"
+                                 style="height: auto !important;"
+                                 var="blogReader"
+                                 widgetVar="dtBlogReader"
+                                 value="#{blogReaderController.listBlogReader}"
+                                 paginatorPosition="top"
+                                 paginator="true"
+                                 emptyMessage="sin registros"
+                                 rows="10"
+                                 lazy="true"
+                                 pageLinks="5"
+                                 dynamic="true"
+                                 reflow="true"
+                                 scrollable="false"
+                                 scrollWidth="100%"
+                                 scrollHeight="100%"
+                                 expandedRow="false"
+                                 styleClass="ui-paginator-current"
+                                 rowKey="#{blogReader.id}"
+                                 selectionMode="single"
+                                 selection="#{blogReaderController.blogReader}">
+
+                        <p:ajax event="rowSelect" oncomplete=""/>
+
+                        <p:column headerText="Id" width="5%">
+                            <h:outputText value="#{blogReader.id}"/>
+                        </p:column>
+                        <p:column headerText="Blog" width="25%">
+                            <h:outputText value="#{blogReader.blogs.title}"/>
+                        </p:column>
+                        <p:column headerText="Reader" width="25%">
+                            <h:outputText value="#{blogReader.readers.name}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+            </div>
+        </h:form>
+
+        <p:dialog header="Agregar lectores por blog" id="dlg2"
+                  widgetVar="dlg2" modal="true" width="60%"
+                  position="center">
+
+            <h:form id="formBlogReader">
+
+                <div class="ui-g">
+
+                    <div class="ui-g-12 ui-md-12">
+                        <div class="ui-lg-4">
+                            <p:commandButton value="#{blogReaderController.getAction()}"
+                                             styleClass="green-btn"
+                                             process="@this"
+                                             actionListener="#{blogReaderController.registrar()}"
+                                             update="listaReaderReaderForm , listaReaderReaderForm:mensaje"/>
+                            <p:commandButton value="Eliminar" actionListener="#{blogReaderController.eliminar()}"
+                                             styleClass="red-btn"
+                                             update="listaReaderReaderForm , listaReaderReaderForm:mensaje"
+                                             rendered="#{blogReaderController.getAction() eq 'Editar'}"/>
+                        </div>
+                        <div class="ui-lg-3">
+                            <p:selectOneMenu id="lector" style="width:100%"
+                                             label="Lector"
+                                             value="#{blogReaderController.lector}"
+                                             filter="true"
+                                             required="true"
+                                             filterMatchMode="contains">
+                                <p:ajax event="change"/>
+                                <f:selectItem itemLabel="Seleccione un Lector"
+                                              itemValue="#{0}"/>
+                                <f:selectItems var="lector"
+                                               value="#{blogReaderController.listaLectores}"
+                                               itemLabel="#{lector.name}"
+                                               itemValue="#{lector.id}"/>
+
+                            </p:selectOneMenu>
+                        </div>
+
+                        <div class="ui-lg-3">
+                            <p:selectOneMenu id="blog" style="width:100%"
+                                             label="Lector"
+                                             value="#{blogReaderController.blog}"
+                                             filter="true"
+                                             required="true"
+                                             filterMatchMode="contains">
+                                <p:ajax event="change"/>
+                                <f:selectItem itemLabel="Seleccione un blog"
+                                              itemValue="#{0}"/>
+                                <f:selectItems var="blog"
+                                               value="#{blogReaderController.listaBlogs}"
+                                               itemLabel="#{blog.title}"
+                                               itemValue="#{blog.id}"/>
+
+                            </p:selectOneMenu>
+                        </div>
+
+                    </div>
+                </div>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+
+</ui:composition>
+
+</body>
+</html>
